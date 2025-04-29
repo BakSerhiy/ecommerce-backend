@@ -1,4 +1,4 @@
-package com.ecommerce.ecommerce_backend.exeption;
+package com.ecommerce.ecommerce_backend.dto;
 
 import lombok.Data;
 

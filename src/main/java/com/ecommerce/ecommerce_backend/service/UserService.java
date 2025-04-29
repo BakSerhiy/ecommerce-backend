@@ -1,12 +1,10 @@
 package com.ecommerce.ecommerce_backend.service;
 
-import com.ecommerce.ecommerce_backend.exeption.ChangePasswordRequest;
+import com.ecommerce.ecommerce_backend.dto.ChangePasswordRequest;
 import com.ecommerce.ecommerce_backend.exeption.ResourceNotFoundException;
 import com.ecommerce.ecommerce_backend.model.User;
 import com.ecommerce.ecommerce_backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
-import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private User registerUser(User user) {
+    public User registerUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalStateException("Email already in use");
         }
@@ -30,7 +28,7 @@ public class UserService {
     }
     public void changePassword(String email, ChangePasswordRequest request ) {
         User user = getUserByEmail(email);
-        if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword()){
+        if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())){
             throw new BadCredentialsException("Current password is incorrect");
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
